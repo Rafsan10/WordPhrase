@@ -57,7 +57,7 @@ const refine = (str) => {
 
 // word cleanier , ? . ! remover
 const refine_word = (word) => {
-  return word.replace(/[.!?]/g, "");
+  return word.replace(/[.!?,(){}]/g, "");
 };
 
 // copy
@@ -128,8 +128,10 @@ const recheck = (combined_input) => {
   for (const word in words) {
     if (for_word.includes(word)) {
       words[word] = 1;
+      console.log(for_word, word, 1);
     } else {
       words[word] = 0;
+      console.log(for_word, word, 2);
     }
   }
 
