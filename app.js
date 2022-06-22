@@ -52,7 +52,7 @@ const refine = (str) => {
   var refined_str = temp_str.filter(function (item) {
     return item != "";
   });
-  return refined_str.join(" ");
+  return refined_str.join(" ").toLowerCase();
 };
 
 // word cleanier , ? . ! remover
@@ -111,7 +111,7 @@ input_listener();
 const combine_value = () => {
   var combined_input = "";
   input_shortener.forEach((item) => {
-    combined_input += "@#@#@#" + item.children[1].value;
+    combined_input += "@#@#@#" + item.children[1].value.toLowerCase();
   });
   return combined_input;
 };
@@ -134,27 +134,33 @@ const recheck = (combined_input) => {
   }
 
   // check if mathced phrase
-  var for_phrase = " " + combined_input + " ";
+  var for_phrase = " " + combined_input.toLowerCase() + " ";
   for (const item in phrase) {
-    if (for_phrase.includes(item)) {
-      var tem_index = for_phrase.indexOf(item);
+    if (for_phrase.includes(item.toLowerCase())) {
+      var tem_index = for_phrase.indexOf(item.toLowerCase());
       if (
-        isLetter(for_phrase[tem_index - 1]) &
-        isLetter(for_phrase[tem_index + item.length])
+        !(
+          isLetter(for_phrase[tem_index - 1]) ||
+          isLetter(for_phrase[tem_index + item.length])
+        )
       ) {
-        phrase[item] = 1;
+        phrase[item.toLowerCase()] = 1;
+        console.log(
+          isLetter(for_phrase[tem_index - 1]),
+          isLetter(for_phrase[tem_index + item.length])
+        );
       } else {
-        phrase[item] = 0;
+        phrase[item.toLowerCase()] = 0;
       }
     } else {
-      phrase[item] = 0;
+      phrase[item.toLowerCase()] = 0;
     }
   }
 };
 
 // check if letter
-function isLetter(str) {
-  return str.length === 1 && str.match(/[a-z]/i);
+function isLetter(c) {
+  return c.toLowerCase() != c.toUpperCase();
 }
 
 // // remove item
@@ -173,11 +179,9 @@ const closeLister = (children) => {
       if (remove_type == "phrases") {
         var removed_item = Object.keys(phrase)[remove_index];
         delete phrase[removed_item];
-        console.log(phrase[removed_item]);
       } else {
         var removed_item = Object.keys(words)[remove_index];
         delete words[removed_item];
-        console.log(words[removed_item]);
       }
       recheck(combine_value());
       populate();
