@@ -33,7 +33,7 @@ key_inp.addEventListener("keypress", function (e) {
     raw_arr = raw_str.split(",");
     for (let i = 0; i < raw_arr.length; i++) {
       if (refine(raw_arr[i]).split(" ").length > 1) {
-        phrase[refine(raw_arr[i])] = 0;
+        phrase[refine_word(refine(raw_arr[i]))] = 0;
       }
       var tem_words = refine(raw_arr[i]).split(" ");
       for (let j = 0; j < tem_words.length; j++) {
