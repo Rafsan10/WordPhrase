@@ -72,7 +72,14 @@ for (let i = 0; i < all_copy.length; i++) {
       e.path[0].classList.remove("copied");
     }, 500);
     var text = e.path[4].childNodes[3].value.toLowerCase();
-    navigator.clipboard.writeText(refine(text)).then(
+    text = text
+      .split(".")
+      .map(function (item) {
+        return capitalize(item.trim());
+      })
+      .join(". ");
+
+    navigator.clipboard.writeText(text).then(
       function () {
         e.path[4].childNodes[3];
       },
@@ -83,6 +90,13 @@ for (let i = 0; i < all_copy.length; i++) {
   });
 }
 
+// capitalize
+
+const capitalize = (str) => {
+  const lower = str.toLowerCase();
+  return lower.charAt(0).toUpperCase() + lower.slice(1);
+};
+console.log(capitalize("rafsan"));
 // input listener event
 const input_listener = () => {
   input_shortener.forEach((cur_field) => {
